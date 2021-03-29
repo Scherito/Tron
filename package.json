@@ -6,11 +6,13 @@
     "authore": "Tobias",
     "license": "",
     "scripts": {
-        "test": "jest"
+        "test": "jest", 
+        "dev": "webpack" 
     },
     "devDependencies": {
         "@babel/plugin-transform-modules-commonjs": "^7.13.8",
         "jest": "^26.6.3",
-        "webpack": "^5.28.0"
+        "webpack": "^5.28.0",
+        "webpack-cli": "^4.6.0"
     }
 }
