@@ -1,18 +1,19 @@
 {
-    "name": "tron",
+    "name": "tetris",
     "version": "1.0.0",
-    "description": "Tron schlangen spiel",
+    "description": "tetris spiel",
     "main": "index.js",
     "authore": "Tobias",
     "license": "",
     "scripts": {
-        "test": "jest", 
-        "dev": "webpack" 
+        "test": "jest",
+        "dev": "webpack --mode development & webpack serve"
     },
     "devDependencies": {
         "@babel/plugin-transform-modules-commonjs": "^7.13.8",
         "jest": "^26.6.3",
         "webpack": "^5.28.0",
-        "webpack-cli": "^4.6.0"
+        "webpack-cli": "^4.6.0",
+        "webpack-dev-server": "^3.11.2"
     }
 }
