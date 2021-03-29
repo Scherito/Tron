@@ -1,0 +1,16 @@
+{
+    "name": "tron",
+    "version": "1.0.0",
+    "description": "Tron schlangen spiel",
+    "main": "index.js",
+    "authore": "Tobias",
+    "license": "",
+    "scripts": {
+        "test": "jest"
+    },
+    "devDependencies": {
+        "@babel/plugin-transform-modules-commonjs": "^7.13.8",
+        "jest": "^26.6.3",
+        "webpack": "^5.28.0"
+    }
+}
