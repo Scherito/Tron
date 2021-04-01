@@ -7,7 +7,8 @@
     "license": "",
     "scripts": {
         "test": "jest",
-        "dev": "webpack --mode development & webpack serve"
+        "dev": "webpack --mode development & webpack serve",
+        "generate": "webpack --mode development"
     },
     "devDependencies": {
         "@babel/plugin-transform-modules-commonjs": "^7.13.8",
