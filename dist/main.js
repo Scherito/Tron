@@ -7,7 +7,6 @@
  * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
  */
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./index.js":
@@ -16,7 +15,29 @@
   \******************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _src_js_canvasUtil__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/js/canvasUtil */ \"./src/js/canvasUtil.js\");\n\r\n\r\n(0,_src_js_canvasUtil__WEBPACK_IMPORTED_MODULE_0__.createCanvas)()\r\nvar counter = 1\r\nwhile (counter < 10){\r\n    (0,_src_js_canvasUtil__WEBPACK_IMPORTED_MODULE_0__.createCanvas)();\r\n    counter = counter +1 \r\n}\r\nconsole.log(\"test\")\r\nvar myCanvas = document.getElementsByTagName(\"canvas\")\r\nconsole.log(myCanvas[0].getContext(\"2d\"))\r\nvar canvasContext = myCanvas[0].getContext(\"2d\")\r\nconsole.log(canvasContext)\r\ncanvasContext.fillStyle = \"#3DC3B3\"\r\ncanvasContext.fillRect(400,175,200,250)\n\n//# sourceURL=webpack://tetris/./index.js?");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _src_js_canvasUtil__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/js/canvasUtil */ \"./src/js/canvasUtil.js\");\n\r\n\r\n(0,_src_js_canvasUtil__WEBPACK_IMPORTED_MODULE_0__.createCanvas)()\r\nconsole.log(\"test\")\r\nvar myCanvas = document.getElementsByTagName(\"canvas\")\r\nconsole.log(myCanvas[0].getContext(\"2d\"))\r\nvar canvasContext = myCanvas[0].getContext(\"2d\")\r\nconsole.log(canvasContext)\r\n;(0,_src_js_canvasUtil__WEBPACK_IMPORTED_MODULE_0__.setDrawingColor)(canvasContext, \"#3DC3B3\")\r\ncanvasContext.fillRect(400,175,200,250)\r\n;(0,_src_js_canvasUtil__WEBPACK_IMPORTED_MODULE_0__.setDrawingColor)(canvasContext, \"#ffffff\")\r\ncanvasContext.fillRect(200,15,200,250)\n\n//# sourceURL=webpack://tetris/./index.js?");
+
+/***/ }),
+
+/***/ "./node_modules/canvas/browser.js":
+/*!****************************************!*\
+  !*** ./node_modules/canvas/browser.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+eval("/* globals document, ImageData */\n\nconst parseFont = __webpack_require__(/*! ./lib/parse-font */ \"./node_modules/canvas/lib/parse-font.js\")\n\nexports.parseFont = parseFont\n\nexports.createCanvas = function (width, height) {\n  return Object.assign(document.createElement('canvas'), { width: width, height: height })\n}\n\nexports.createImageData = function (array, width, height) {\n  // Browser implementation of ImageData looks at the number of arguments passed\n  switch (arguments.length) {\n    case 0: return new ImageData()\n    case 1: return new ImageData(array)\n    case 2: return new ImageData(array, width)\n    default: return new ImageData(array, width, height)\n  }\n}\n\nexports.loadImage = function (src, options) {\n  return new Promise(function (resolve, reject) {\n    const image = Object.assign(document.createElement('img'), options)\n\n    function cleanup () {\n      image.onload = null\n      image.onerror = null\n    }\n\n    image.onload = function () { cleanup(); resolve(image) }\n    image.onerror = function () { cleanup(); reject(new Error('Failed to load the image \"' + src + '\"')) }\n\n    image.src = src\n  })\n}\n\n\n//# sourceURL=webpack://tetris/./node_modules/canvas/browser.js?");
+
+/***/ }),
+
+/***/ "./node_modules/canvas/lib/parse-font.js":
+/*!***********************************************!*\
+  !*** ./node_modules/canvas/lib/parse-font.js ***!
+  \***********************************************/
+/***/ ((module) => {
+
+"use strict";
+eval("\n\n/**\n * Font RegExp helpers.\n */\n\nconst weights = 'bold|bolder|lighter|[1-9]00'\n  , styles = 'italic|oblique'\n  , variants = 'small-caps'\n  , stretches = 'ultra-condensed|extra-condensed|condensed|semi-condensed|semi-expanded|expanded|extra-expanded|ultra-expanded'\n  , units = 'px|pt|pc|in|cm|mm|%|em|ex|ch|rem|q'\n  , string = '\\'([^\\']+)\\'|\"([^\"]+)\"|[\\\\w\\\\s-]+'\n\n// [ [ <‘font-style’> || <font-variant-css21> || <‘font-weight’> || <‘font-stretch’> ]?\n//    <‘font-size’> [ / <‘line-height’> ]? <‘font-family’> ]\n// https://drafts.csswg.org/css-fonts-3/#font-prop\nconst weightRe = new RegExp('(' + weights + ') +', 'i')\nconst styleRe = new RegExp('(' + styles + ') +', 'i')\nconst variantRe = new RegExp('(' + variants + ') +', 'i')\nconst stretchRe = new RegExp('(' + stretches + ') +', 'i')\nconst sizeFamilyRe = new RegExp(\n  '([\\\\d\\\\.]+)(' + units + ') *'\n  + '((?:' + string + ')( *, *(?:' + string + '))*)')\n\n/**\n * Cache font parsing.\n */\n\nconst cache = {}\n\nconst defaultHeight = 16 // pt, common browser default\n\n/**\n * Parse font `str`.\n *\n * @param {String} str\n * @return {Object} Parsed font. `size` is in device units. `unit` is the unit\n *   appearing in the input string.\n * @api private\n */\n\nmodule.exports = function (str) {\n  // Cached\n  if (cache[str]) return cache[str]\n\n  // Try for required properties first.\n  const sizeFamily = sizeFamilyRe.exec(str)\n  if (!sizeFamily) return // invalid\n\n  // Default values and required properties\n  const font = {\n    weight: 'normal',\n    style: 'normal',\n    stretch: 'normal',\n    variant: 'normal',\n    size: parseFloat(sizeFamily[1]),\n    unit: sizeFamily[2],\n    family: sizeFamily[3].replace(/[\"']/g, '').replace(/ *, */g, ',')\n  }\n\n  // Optional, unordered properties.\n  let weight, style, variant, stretch\n  // Stop search at `sizeFamily.index`\n  let substr = str.substring(0, sizeFamily.index)\n  if ((weight = weightRe.exec(substr))) font.weight = weight[1]\n  if ((style = styleRe.exec(substr))) font.style = style[1]\n  if ((variant = variantRe.exec(substr))) font.variant = variant[1]\n  if ((stretch = stretchRe.exec(substr))) font.stretch = stretch[1]\n\n  // Convert to device units. (`font.unit` is the original unit)\n  // TODO: ch, ex\n  switch (font.unit) {\n    case 'pt':\n      font.size /= 0.75\n      break\n    case 'pc':\n      font.size *= 16\n      break\n    case 'in':\n      font.size *= 96\n      break\n    case 'cm':\n      font.size *= 96.0 / 2.54\n      break\n    case 'mm':\n      font.size *= 96.0 / 25.4\n      break\n    case '%':\n      // TODO disabled because existing unit tests assume 100\n      // font.size *= defaultHeight / 100 / 0.75\n      break\n    case 'em':\n    case 'rem':\n      font.size *= defaultHeight / 0.75\n      break\n    case 'q':\n      font.size *= 96 / 25.4 / 4\n      break\n  }\n\n  return (cache[str] = font)\n}\n\n\n//# sourceURL=webpack://tetris/./node_modules/canvas/lib/parse-font.js?");
 
 /***/ }),
 
@@ -26,7 +47,8 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _src
   \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"createCanvas\": () => (/* binding */ createCanvas)\n/* harmony export */ });\nfunction createCanvas(){\r\n    var canvasElement = document.createElement(\"canvas\")\r\n    document.body.appendChild(canvasElement)\r\n}\r\n\n\n//# sourceURL=webpack://tetris/./src/js/canvasUtil.js?");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"createCanvas\": () => (/* binding */ createCanvas),\n/* harmony export */   \"getCanvasContext\": () => (/* binding */ getCanvasContext),\n/* harmony export */   \"setDrawingColor\": () => (/* binding */ setDrawingColor)\n/* harmony export */ });\n/* harmony import */ var canvas__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! canvas */ \"./node_modules/canvas/browser.js\");\n\r\n\r\n/**\r\n * @description creates a canvas and attaches it to the body\r\n * @param {string} id - the ID of the canvas \r\n * @param {number} width - the width of the canvas\r\n * @param {number} height - the height of the canvas\r\n */\r\nfunction createCanvas(id, width, height){\r\n    var canvasElement = document.createElement(\"canvas\")\r\n    canvasElement.id = id\r\n    canvasElement.width = width\r\n    canvasElement.height = height \r\n    document.body.appendChild(canvasElement)\r\n}\r\n\r\n/**\r\n * @description Takes an ID and searches for a Canvas with the ID.\r\n *  Returns the Context of the Canvas.\r\n * @param {string} id - The ID of the canvas to search for.\r\n * @returns {CanvasRenderingContext2D} The drawing context of the canvas.\r\n */\r\nfunction getCanvasContext(id){\r\n    var canvasElement = document.getElementById(id)\r\n    var canvasContext = canvasElement.getContext(\"2d\")\r\n    return canvasContext\r\n}\r\n\r\nfunction setDrawingColor(canvasContext, hexCode){\r\n    canvasContext.fillStyle = hexCode\r\n}\n\n//# sourceURL=webpack://tetris/./src/js/canvasUtil.js?");
 
 /***/ })
 
