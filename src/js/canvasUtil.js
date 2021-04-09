@@ -35,3 +35,27 @@ export function getCanvasContext(id){
 export function setDrawingColor(canvasContext, hexCode){
     canvasContext.fillStyle = hexCode
 }
+/**
+ * @description Tells us the height and width of the rows and columns 
+ * and gives them back as an object
+ * @param {HTMLCanvasElement} canvas - the canvas we want do define the grid on 
+ * @param {number} rows - tells us how many of them we get/need
+ * @param {number} columns - tells us how many we get/need 
+ * @returns {Cell}
+ */
+export function defineGrid(canvas, rows, columns) {
+    canvas.width 
+    canvas.height
+    var rowsheight = canvas.height / rows
+    var columnwidth = canvas.width / columns
+    return {
+        columnwidth,
+        rowsheight
+    }
+}
+
+/**
+ * @typedef {object} Cell
+ * @property {number} rowsheight 
+ * @property {number} columnwidth
+ */
