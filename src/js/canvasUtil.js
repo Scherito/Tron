@@ -41,7 +41,7 @@ export function setDrawingColor(canvasContext, hexCode){
  * @param {HTMLCanvasElement} canvas - the canvas we want do define the grid on 
  * @param {number} rows - tells us how many of them we get/need
  * @param {number} columns - tells us how many we get/need 
- * @returns {Cell}
+ * @returns {Grid}
  */
 export function defineGrid(canvas, rows, columns) {
     canvas.width 
@@ -53,9 +53,31 @@ export function defineGrid(canvas, rows, columns) {
         rowsheight
     }
 }
+/**
+ * @description Takes a rowindex and a columnindex and gives the coordinates
+ * of the corresponding cell.
+ * @param {number} rowindex (Zeile) 
+ * @param {number} columnindex (Spalte)
+ * @param {Grid} defineGrid 
+ * @returns {Coordinate}
+ */
+export function getCoordinatesForCell(rowindex, columnindex, defineGrid) {
+    var x_Coordinate = columnindex * defineGrid.columnwidth 
+    var y_Coordinate = rowindex * defineGrid.rowsheight
+    return { 
+        x_Coordinate,
+        y_Coordinate
+    }
+}
 
 /**
- * @typedef {object} Cell
+ * @typedef {object} Grid
  * @property {number} rowsheight 
  * @property {number} columnwidth
+ */
+
+/**
+ * @typedef {object} Coordinate
+ * @property {number} x_Coordinate
+ * @property {number} y_Coordinate
  */

@@ -1,4 +1,4 @@
-import {createCanvas, setDrawingColor} from "./src/js/canvasUtil"
+import {createCanvas, setDrawingColor, defineGrid, getCoordinatesForCell  } from "./src/js/canvasUtil"
 import {addKeydownListener} from "./src/js/playerInteraction"
 
 createCanvas()
@@ -12,3 +12,9 @@ canvasContext.fillRect(400,175,200,250)
 setDrawingColor(canvasContext, "#ffffff")
 canvasContext.fillRect(200,15,200,250)
 addKeydownListener()
+var gridInfo = defineGrid(myCanvas, 10, 10)
+var block1 = getCoordinatesForCell(2, 3, gridInfo)
+var block2 = getCoordinatesForCell(3, 3, gridInfo)
+var block3 = getCoordinatesForCell(4, 3, gridInfo)
+var block4 = getCoordinatesForCell(4, 4, gridInfo)
+canvasContext.fillRect(block1.x,block1.y,gridInfo.columnwidth,gridInfo.rowsheight)
